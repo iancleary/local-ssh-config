@@ -4,15 +4,21 @@ from typing import Optional
 import typer
 
 from vmsshconfig._config import _load_config, _merge_config
-from vmsshconfig._constants import SSH_CONFIG_DIR
+from vmsshconfig._constants import (
+    SSH_CONFIG_DIR, 
+    SSH_CONFIG_FILE, 
+    SSH_CONFIG_INCLUDE_DIRECTIVE,
+    SSH_DIR,
+)
 from vmsshconfig._confirms import (
     _create_components_dir_confirm,
     _overwrite_component_confirm,
 )
 from vmsshconfig._echos import (
-    _create_components_dir_echo,
+    _append_echo,
+    _create_dir_echo,
+    _create_file_echo,
     _create_vmsshconfig_echo,
-    _overwrite_component_echo,
 )
 from vmsshconfig._jinja import _create_jinja_environment
 from vmsshconfig._utils import _create_directory
@@ -24,10 +30,9 @@ JINJA_ENVIRONMENT = _create_jinja_environment()
 
 
 def _create_output(
-    new_directory: Path,
     template_name: str,
     variables: dict,
-    filename: str = None,
+    filename: Path = None,
 ) -> None:
     """
     Write new file to disk, within `new_directory`,
@@ -39,27 +44,17 @@ def _create_output(
     template = JINJA_ENVIRONMENT.get_template(f"{template_name}.j2")
     output = template.render(variables)
 
-    with open(f"{SSH_CONFIG_DIR}/{filename}", "w") as f:
+    with open(f"{SSH_DIR}/{filename}", "w") as f:
         f.write(output)
 
 
 @app.command()
 def main(
-    name: str = typer.Argument(
-        ...,  # Required to give name, as in `new-component ContactForm`
-        help="Name of component to create.",
-    ),
-    directory: str = typer.Option(
+    file: str = typer.Option(
         None,
-        "--directory",
-        "-d",
-        help="The directory in which to create the component.",
-    ),
-    extension: str = typer.Option(
-        None,
-        "--extension",
-        "-e",
-        help="The file extension for the created component files.",
+        "--file",
+        "-f",
+        help="The JSON file containing the virtual machine configuration",
     ),
     version: Optional[bool] = typer.Option(
         None,
@@ -71,67 +66,60 @@ def main(
     ),
 ) -> None:
     """
-    Creates an new component directory in a React project,
-    with opinionated defaults for styled-components.
+    Creates an `~/.ssh/config.d/` directory, checks to see 
+    if your ~/.ssh/config file include all files in that directory,
+    and then creates config files for each virtual machine 
+    specified in your `~/.config/vm-ip-ssh-config/settings.json` file.
 
-    For information on styled-components, see https://styled-components.com/.
-
-    For online documentation, see https://new-component.iancleary.me/.
+    See https://vm-ip-ssh-config.iancleary.me/ for more information.
     """
 
-    # load and merge config
-    file_config = _load_config()
-    config = _merge_config(
-        file_config=file_config, directory=directory, extension=extension
-    )
+    # create ~/.ssh/config.d/ directory
+    if SSH_CONFIG_DIR.is_dir():
+        SSH_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+        _create_dir_echo(directory=SSH_CONFIG_DIR)
 
-    # update variables form config
-    directory = config["directory"]
-    extension = config["extension"]
-
-    # path to components directory
-    components_directory = Path(directory)
-
-    # Prompt user to create components directory, if it doesn't exist
-    if components_directory.exists() is False:
-        _create_components_dir_confirm(components_directory=components_directory)
-        _create_directory(directory=components_directory)
-        _create_components_dir_echo(components_directory=components_directory)
-
-    # Create Paths to the new Component directory
-    vmsshconfig_directory = components_directory / name
-    full_path_to_component_directory = Path.cwd() / vmsshconfig_directory
-
-    # Allow user to abort if component already exists, else create component directory
-    if full_path_to_component_directory.exists() is True:
-        _overwrite_component_echo(
-            components_directory=vmsshconfig_directory, component_name=name
+    # create ~/.ssh/config file or appended to it, as needed
+    if not SSH_CONFIG_FILE.is_file():
+        # create file with SSH_CONFIG_INCLUDE_DIRECTIVE as sole line
+        _create_output(
+            template_name="config.j2"
         )
-        _overwrite_component_confirm(component_name=name)
-
+        _create_file_echo(file=SSH_CONFIG_FILE)
     else:
-        _create_directory(directory=full_path_to_component_directory)
+        # check if SSH_CONFIG_INCLUDE_DIRECTIVE is in SSH_CONFIG_FILE
+        ssh_config_include_directive_found = False
+        with SSH_CONFIG_FILE.open("r", encoding="utf-8") as ssh_config_file:
+            lines = ssh_config_file.iter_lines()
+            
+            for line in lines:
+                if SSH_CONFIG_INCLUDE_DIRECTIVE in line:
+                    ssh_config_include_directive_found = True
 
-    # Setup Jinja Variables used in template render
-    variables = {"ComponentName": name}
+        # append SSH_CONFIG_INCLUDE_DIRECTIVE to SSH_CONFIG_FILE
+        if ssh_config_include_directive_found == False:
+            with SSH_CONFIG_FILE.open("a", encoding="utf-8") as ssh_config_file:            
+                ssh_config_file.write(SSH_CONFIG_INCLUDE_DIRECTIVE)
+            _append_echo(file=SSH_CONFIG_FILE, text=SSH_CONFIG_INCLUDE_DIRECTIVE)
 
-    # Render component files in your components directory
-    _create_output(
-        new_directory=full_path_to_component_directory,
-        template_name="index",
-        variables=variables,
-        extension=extension,
-    )
-    _create_output(
-        new_directory=full_path_to_component_directory,
-        template_name="component",
-        variables=variables,
-        extension=extension,
-        filename=f"{name}",
-    )
+
+    # load and merge config
+    config = _load_config()
+
+    # accomodate single virtual machine
+    if isinstance(config, dict):
+        virtual_machine_configs = [config]
+
+    # loop through virtual machines and create ~/.ssh/config.d/ files
+    for virtual_machine_config in virtual_machine_configs:
+        _create_output(
+            template_name="config.d/config.j2",
+            variables=virtual_machine_config,
+            filename=virtual_machine_config["hostname"]
+        )
+
 
     # Echo final status to user
     _create_vmsshconfig_echo(
-        component_name=name,
-        path_to_component_directory=vmsshconfig_directory,
+        hostnames=[SSH_CONFIG_DIR / Path(x["hostname"]) for x in virtual_machine_configs],
     )

@@ -21,7 +21,7 @@ readme = "README.md"
 include = ["vmsshconfig/py.typed"]
 
 [tool.poetry.scripts]
-new-component = "vmsshconfig.__main__:main"
+vm-ssh-config = "vmsshconfig.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"
