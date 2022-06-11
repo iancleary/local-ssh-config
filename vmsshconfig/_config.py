@@ -1,19 +1,20 @@
 import json
+from pathlib import Path
 
 from vmsshconfig._constants import (
     GLOBAL_CONFIG_FILE,
 )
 
 
-def _load_config() -> dict:
+def _load_config(config_file:Path=GLOBAL_CONFIG_FILE) -> dict:
     """
     Loads config from global scope, if they exist.
     """
     file_config = {}
 
-    if GLOBAL_CONFIG_FILE.exists():
-        f = open(GLOBAL_CONFIG_FILE)
-        file_config["global"] = json.load(f)
+    if config_file.exists():
+        f = open(config_file)
+        file_config = json.load(f)
         f.close()
 
     return file_config

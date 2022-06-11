@@ -3,17 +3,15 @@ from typing import Optional
 
 import typer
 
-from vmsshconfig._config import _load_config, _merge_config
+from vmsshconfig._config import _load_config
 from vmsshconfig._constants import (
     SSH_CONFIG_DIR, 
     SSH_CONFIG_FILE, 
     SSH_CONFIG_INCLUDE_DIRECTIVE,
     SSH_DIR,
+    GLOBAL_CONFIG_FILE
 )
-from vmsshconfig._confirms import (
-    _create_components_dir_confirm,
-    _overwrite_component_confirm,
-)
+
 from vmsshconfig._echos import (
     _append_echo,
     _create_dir_echo,
@@ -21,7 +19,6 @@ from vmsshconfig._echos import (
     _create_vmsshconfig_echo,
 )
 from vmsshconfig._jinja import _create_jinja_environment
-from vmsshconfig._utils import _create_directory
 from vmsshconfig._version import _version_callback
 
 app = typer.Typer()
@@ -33,25 +30,26 @@ def _create_output(
     template_name: str,
     variables: dict,
     filename: Path = None,
+    directory: Path = SSH_CONFIG_DIR
 ) -> None:
     """
     Write new file to disk, within `new_directory`,
     by rendering the jinja template `template_name`
     """
     if filename is None:
-        filename = template_name
+        filename = Path(template_name)
 
-    template = JINJA_ENVIRONMENT.get_template(f"{template_name}.j2")
+    template = JINJA_ENVIRONMENT.get_template(f"{template_name}")
     output = template.render(variables)
 
-    with open(f"{SSH_DIR}/{filename}", "w") as f:
+    with open(f"{directory}/{filename}", "w") as f:
         f.write(output)
 
 
 @app.command()
 def main(
     file: str = typer.Option(
-        None,
+        GLOBAL_CONFIG_FILE,
         "--file",
         "-f",
         help="The JSON file containing the virtual machine configuration",
@@ -75,7 +73,7 @@ def main(
     """
 
     # create ~/.ssh/config.d/ directory
-    if SSH_CONFIG_DIR.is_dir():
+    if not SSH_CONFIG_DIR.is_dir():
         SSH_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
         _create_dir_echo(directory=SSH_CONFIG_DIR)
 
@@ -83,6 +81,7 @@ def main(
     if not SSH_CONFIG_FILE.is_file():
         # create file with SSH_CONFIG_INCLUDE_DIRECTIVE as sole line
         _create_output(
+            directory=SSH_DIR,
             template_name="config.j2"
         )
         _create_file_echo(file=SSH_CONFIG_FILE)
@@ -90,34 +89,39 @@ def main(
         # check if SSH_CONFIG_INCLUDE_DIRECTIVE is in SSH_CONFIG_FILE
         ssh_config_include_directive_found = False
         with SSH_CONFIG_FILE.open("r", encoding="utf-8") as ssh_config_file:
-            lines = ssh_config_file.iter_lines()
+            lines = [x for x in ssh_config_file]
+            # typer.echo(lines) # debug
             
             for line in lines:
                 if SSH_CONFIG_INCLUDE_DIRECTIVE in line:
                     ssh_config_include_directive_found = True
-
+        # typer.echo(str(ssh_config_include_directive_found)) # debug
+        
         # append SSH_CONFIG_INCLUDE_DIRECTIVE to SSH_CONFIG_FILE
         if ssh_config_include_directive_found == False:
             with SSH_CONFIG_FILE.open("a", encoding="utf-8") as ssh_config_file:            
                 ssh_config_file.write(SSH_CONFIG_INCLUDE_DIRECTIVE)
             _append_echo(file=SSH_CONFIG_FILE, text=SSH_CONFIG_INCLUDE_DIRECTIVE)
 
-
     # load and merge config
-    config = _load_config()
-
+    config = _load_config(config_file=Path(file))
+  
     # accomodate single virtual machine
     if isinstance(config, dict):
         virtual_machine_configs = [config]
+    else:
+        virtual_machine_configs = config
+    # typer.echo(str(virtual_machine_configs)) # debug
 
     # loop through virtual machines and create ~/.ssh/config.d/ files
     for virtual_machine_config in virtual_machine_configs:
+        # typer.echo(virtual_machine_config) # debug
         _create_output(
             template_name="config.d/config.j2",
             variables=virtual_machine_config,
+            directory=SSH_CONFIG_DIR,
             filename=virtual_machine_config["hostname"]
         )
-
 
     # Echo final status to user
     _create_vmsshconfig_echo(

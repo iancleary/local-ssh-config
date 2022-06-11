@@ -11,14 +11,14 @@ namespace_packages = true
 show_error_codes = true
 
 [tool.poetry]
-name = "vm-ssh-config"
-version = "0.3.0"
+name = "vmsshconfig"
+version = "0.1.0"
 description = "Quickly update ssh config files for your local virtual machines"
 authors = ["Ian Cleary <contact@iancleary.me>"]
 license = "MIT"
 homepage = "https://github.com/iancleary/vm-ssh-config"
 readme = "README.md"
-include = ["vmsshconfig/py.typed"]
+include = ["vmsshconfig/py.typed", "templates/"]
 
 [tool.poetry.scripts]
 vm-ssh-config = "vmsshconfig.__main__:main"

@@ -1,0 +1,6 @@
+{
+    "hostname": "test.local",
+    "ip_address": "0.0.0.0",
+    "user": "test",
+    "ssh_private_key": "~/.ssh/example_id_ed25519"
+}
