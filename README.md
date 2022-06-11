@@ -36,7 +36,7 @@ This assumes you have:
 
 ### Hyper-V Manager IP Address
 
-![Hyper-V Manager Networking Tab](docs\assets\hyper-v-manager-networking-tab.png)
+![Hyper-V Manager Networking Tab](docs/assets/hyper-v-manager-networking-tab.png)
 
 > I currently use Ubuntu Servers, if you do to [several `apt` packages installed in the Virtual Machine, so that Hyper-V can report the IP Address](https://stackoverflow.com/a/72534742/13577666)
 
@@ -151,7 +151,7 @@ Example with single host, as list:
 }
 ```
 
-> A single dictionary is converted to a list of hosts before looping through the files, so either structure is valid (your preference)
+> A single dictionary is converted to a list of hosts before looping through the files, so either structure is valid (your preference).
 
 Example with multiple hosts:
 
