@@ -3,10 +3,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from vmsshconfig import __app_name__, __version__, cli
-from vmsshconfig._constants import (
-    SSH_CONFIG_DIR,
-    # GLOBAL_CONFIG_FILE,
-)
+from vmsshconfig._constants import SSH_CONFIG_DIR  # GLOBAL_CONFIG_FILE,
 
 # if GLOBAL_CONFIG_FILE.exists():
 #     os.remove(GLOBAL_CONFIG_FILE)

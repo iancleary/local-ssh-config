@@ -5,13 +5,12 @@ import typer
 
 from vmsshconfig._config import _load_config
 from vmsshconfig._constants import (
+    GLOBAL_CONFIG_FILE,
     SSH_CONFIG_DIR,
     SSH_CONFIG_FILE,
     SSH_CONFIG_INCLUDE_DIRECTIVE,
     SSH_DIR,
-    GLOBAL_CONFIG_FILE,
 )
-
 from vmsshconfig._echos import (
     _append_echo,
     _create_dir_echo,
@@ -20,7 +19,6 @@ from vmsshconfig._echos import (
 )
 from vmsshconfig._jinja import _create_jinja_environment
 from vmsshconfig._version import _version_callback
-
 from vmsshconfig.utils import _get_ip_address
 
 app = typer.Typer()
@@ -129,7 +127,5 @@ def main(
 
     # Echo final status to user
     _create_vmsshconfig_echo(
-        hostnames=[
-            SSH_CONFIG_DIR / Path(x["host"]) for x in virtual_machine_configs
-        ],
+        hostnames=[SSH_CONFIG_DIR / Path(x["host"]) for x in virtual_machine_configs],
     )
