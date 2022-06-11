@@ -9,7 +9,7 @@ Ian Cleary ([iancleary](https://github.com/iancleary))
 
 ## Description
 
-**Welcome!** This is a CLI for updated SSH config files from your local virtual machines quickly.
+**Welcome!** This is a CLI to generate/update SSH config files for your local virtual machines quickly.
 
 ## Problem
 
