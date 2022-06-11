@@ -124,12 +124,12 @@ def main(
             template_name="config.d/config.j2",
             variables=virtual_machine_config,
             directory=SSH_CONFIG_DIR,
-            filename=virtual_machine_config["hostname"],
+            filename=virtual_machine_config["host"],
         )
 
     # Echo final status to user
     _create_vmsshconfig_echo(
         hostnames=[
-            SSH_CONFIG_DIR / Path(x["hostname"]) for x in virtual_machine_configs
+            SSH_CONFIG_DIR / Path(x["host"]) for x in virtual_machine_configs
         ],
     )
