@@ -21,6 +21,8 @@ from vmsshconfig._echos import (
 from vmsshconfig._jinja import _create_jinja_environment
 from vmsshconfig._version import _version_callback
 
+from vmsshconfig.utils import _get_ip_address
+
 app = typer.Typer()
 
 JINJA_ENVIRONMENT = _create_jinja_environment()
@@ -40,6 +42,11 @@ def _create_output(
         filename = Path(template_name)
 
     template = JINJA_ENVIRONMENT.get_template(f"{template_name}")
+
+    # handle cases of where to get hostname (hyper-v, etc.)
+    if isinstance(variables["hostname"], dict):
+        variables["hostname"] = _get_ip_address(source_dict=variables["hostname"])
+
     output = template.render(variables)
 
     with open(f"{directory}/{filename}", "w") as f:

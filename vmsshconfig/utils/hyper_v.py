@@ -3,27 +3,30 @@ import subprocess
 
 import typer
 
+
 def run(cmd):
     completed = subprocess.run(["powershell", "-Command", cmd], capture_output=True)
     return completed
 
-def get_hyper_v_ip_address(physical_address:str) -> str:
+
+def get_hyper_v_ip_address(physical_address: str) -> str:
     # PowerShell command to run
     interface_command = "arp -a"
     info = run(interface_command)
     if info.returncode != 0:
         typer.echo("Hyper-V: Powershell (arp -a): An error occured: %s", info.stderr)
     else:
-        typer.echo("Hyper-V: Powershell (arp -a): Interface command executed successfully!")
-    
-        
+        typer.echo(
+            "Hyper-V: Powershell (arp -a): Interface command executed successfully!"
+        )
+
         print("-------------------------")
-        
+
         # convert b"" to string
         output = info.stdout.decode("utf-8")
 
-        #print(type(output))
-        #print(output)
+        # print(type(output))
+        # print(output)
 
         lines = iter(output.splitlines())
 
@@ -33,7 +36,7 @@ def get_hyper_v_ip_address(physical_address:str) -> str:
                 ip_line = line
                 found = True
                 break
-        
+
         if not found:
             typer.echo(f"{physical_address} not found in \n\n{str(info.stdout)}\n\n")
 

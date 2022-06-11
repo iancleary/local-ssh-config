@@ -1,6 +1,17 @@
-{
-    "hostname": "test.local",
-    "ip_address": "0.0.0.0",
-    "user": "test",
-    "ssh_private_key": "~/.ssh/example_id_ed25519"
-}
+[
+    {
+        "host": "test.local",
+        "hostname": "0.0.0.0",
+        "user": "test",
+        "identity_file": "~/.ssh/example_id_ed25519"
+    },
+    {
+        "host": "ubuntu.local",
+        "hostname": {
+            "source": "hyper-v",
+            "physical_address": "00-15-5d-95-fb-09"
+        },
+        "user": "icleary",
+        "identity_file": "~/.ssh/github_id_rsa_ed25519"
+    }
+]
