@@ -16,11 +16,6 @@ def get_hyper_v_ip_address(physical_address:str) -> str:
     else:
         typer.echo("Hyper-V: Powershell (arp -a): Interface command executed successfully!")
     
-        # for line in info.stdout.split("\n"):
-        #     if "00-15-5d-95-fb-09" in line:
-        #         print(line)
-
-        # print(info.stdout)
         
         print("-------------------------")
         
@@ -40,7 +35,7 @@ def get_hyper_v_ip_address(physical_address:str) -> str:
                 break
         
         if not found:
-            typer.echo(f"{physical_address} not found in \n\n{str(lines)}\n\n")
+            typer.echo(f"{physical_address} not found in \n\n{str(info.stdout)}\n\n")
 
         ip_line_cleaned = [x for x in ip_line.split(" ") if x != ""]
         ip_address = ip_line_cleaned[0]
