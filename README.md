@@ -24,7 +24,7 @@ This script updates myt ssh config file for me
 - get IP address from PowerShell
 - write template config files to the `~/.ssh/config.d/` directory according to your `~/.config/vm-ip-ssh-config/settings.json` file.
 
-> Plan is to accomodate multipass at a later point (hence the lack of Hyper-V in the name)
+> Plan is to accomodate multipass or VirtualBoxat a later point (hence the lack of Hyper-V in the name). Depends if I start using them more consistently and benefit from dynamically updating my server cattle config.
 
 This assumes you have:
 
@@ -58,15 +58,20 @@ That will output the following:
 ```bash
 Usage: vmsshconfig [OPTIONS]
 
-  Creates an `~/.ssh/config.d/` directory, checks to see if you include all files in that directory,
-  and then creates config files for each virtual machine specified in your `~/.config/vm-ip-ssh-config/settings.json` file.
+  Creates an `~/.ssh/config.d/` directory, 
+  checks to see if you include all files in that directory,
+  and then creates config files for each virtual machine specified
+  in your `~/.config/vm-ip-ssh-config/settings.json` file.
 
-  See https://vm-ip-ssh-config.iancleary.me/ for more information.
+  See https://github.com/iancleary/vm-ssh-config/ for more information.
 
 Arguments:
   None
 
 Options:
+  -f, --file TEXT       The JSON file containing the virtual machine
+                        configuration  [default: C:\Users\username\.config\vm-
+                        ip-ssh-config\settings.json]
   -v, --version         Show the application's version and exit.
   --install-completion  Install completion for the current shell.
   --show-completion     Show completion for the current shell, to copy it or
@@ -79,10 +84,16 @@ Options:
 The first and only argument is the name of the component to create.
 
 ```bash
-❯ vm-ssh-config
-Updated ~/.ssh/config.d/ for your virtual machines 💻 🚀!
+$ vm-ssh-config
+Hyper-V: Powershell (arp -a): Interface command executed successfully!
+-------------------------
 
-/c/Users/iancleary/.ssh/config.d/ubuntu.local
+✨ Creating ~/.ssh/config.d/ files
+✅ C:\Users\icleary\.ssh\config.d\test.local
+✅ C:\Users\icleary\.ssh\config.d\ubuntu.local
+SSH config updated! 🚀 ✨!
+
+Thank you for using vm-ssh-config.
 ```
 
 The path printed is the absolute path to the updated config files.
@@ -90,54 +101,91 @@ The path printed is the absolute path to the updated config files.
 > This uses a directory `~/.ssh/config.d/` to allow for a single file per Host, to allow cleaner version tracking within a dotfile manager.
 > See [`Include config.d/*` in your `~/.ssh/config`](https://superuser.com/questions/247564/is-there-a-way-for-one-ssh-config-file-to-include-another-one) for the include syntax
 
-
-
 ## Configuration
 
-Configuration can be done through 3 different ways:
+Configuration can be done through 2 different ways:
 
-* Creating a global `settings.json` in your home directory (`~/.config/vm-ssh-config/settings.json`).
-* Creating a local `.vm-ssh-config-config.json` in your project's root directory.
-* Command-line arguments.
+- Creating a global `settings.json` in your home directory (`~/.config/vm-ssh-config/settings.json`).
+- Creating a local `.vm-ssh-config-config.json` in your project's root directory and including the path to that file with the `--f` or `-f` optionanl command-line argument.
 
-The resulting values are merged, with command-line values overwriting local values, and local values overwriting global ones.
+The optional command line value takes precendence global settings file being the default.
 
 ## API Reference
 
-### Directory
+### File
 
-Controls the desired directory for the created component. Defaults to src/components
-
-Usage:
-
-Command line: `--directory <value>` or `-d <value>`
-
-JSON config: `{ "directory": <value> }`
-
-### File Extension
-
-Controls the file extension for the created components. Can be either js (default) or jsx.
+Controls the settings.json to load. 
+Defaults to `~/.config/vm-ssh-config/settings.json`
 
 Usage:
 
-Command line: `--extension <value> or -e <value>`
+Command line: `--file <value>` or `-f <value>`
 
-JSON config: `{ "extension": <value> }`
+JSON config:
+
+Example with single host, as dictionary
+
+```json
+{
+    "host": "ubuntu.local",
+    "hostname": {
+        "source": "hyper-v",
+        "physical_address": "00-15-5d-95-fb-09"
+    },
+    "user": "icleary",
+    "identity_file": "~/.ssh/github_id_rsa_ed25519"
+}
+```
+
+Example with single host, as list:
+
+```json
+{
+    "host": "ubuntu.local",
+    "hostname": {
+        "source": "hyper-v",
+        "physical_address": "00-15-5d-95-fb-09"
+    },
+    "user": "icleary",
+    "identity_file": "~/.ssh/github_id_rsa_ed25519"
+}
+```
+
+> A single dictionary is converted to a list of hosts before looping through the files, so either structure is valid (your preference)
+
+Example with multiple hosts:
+
+```json
+[
+    {
+        "host": "test.local",
+        "hostname": "0.0.0.0",
+        "user": "test",
+        "identity_file": "~/.ssh/example_id_ed25519"
+    },
+    {
+        "host": "ubuntu.local",
+        "hostname": {
+            "source": "hyper-v",
+            "physical_address": "00-15-5d-95-fb-09"
+        },
+        "user": "icleary",
+        "identity_file": "~/.ssh/github_id_rsa_ed25519"
+    }
+]
+```
 
 ## Further information
 
 > I will likely evolve this CLI as I learn more; I'm on my way 😊
 
-- Add different component types
-- Promote better patterns to ensure CSS (single source of styles, Isolated CSS)
+- Add [multipass](multipass.run) support for {name}.mshome.net
+- Add Virtual Machine Support
 
-Thanks to Josh W Comeau's blog post "[The styled-components Happy Path
-](https://www.joshwcomeau.com/css/styled-components/) for starting my education! Again, it puts this README in perspective.
-
-**Enjoy quickly creating styled components 💅 🚀!**
+**Enjoy quickly updating your ssh configurations 🚀!**
 
 ## Contributing
 
-I created this CLI for my opinionated uses and may not accept changes.
+I created this CLI for my opinionated uses and may not accept changes.  That said, I made this to solve a problem, and if you have the same problem, I hope it helps you! 😊
 
 See [CONTRIBUTING.md](.github/CONTRIBUTING.md).
