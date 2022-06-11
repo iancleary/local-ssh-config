@@ -29,12 +29,6 @@ def test_cli() -> None:
     print(result.stdout)
     assert result.exit_code == 0
 
-    assert (
-        str(SSH_CONFIG_DIR / "test.local")
-        in result.stdout
-    )
+    assert str(SSH_CONFIG_DIR / "test.local") in result.stdout
 
-    assert (
-        "SSH config updated! 🚀 ✨!"
-        in result.stdout
-    )
+    assert "SSH config updated! 🚀 ✨!" in result.stdout

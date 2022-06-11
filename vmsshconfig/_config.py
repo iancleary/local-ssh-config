@@ -6,7 +6,7 @@ from vmsshconfig._constants import (
 )
 
 
-def _load_config(config_file:Path=GLOBAL_CONFIG_FILE) -> dict:
+def _load_config(config_file: Path = GLOBAL_CONFIG_FILE) -> dict:
     """
     Loads config from global scope, if they exist.
     """

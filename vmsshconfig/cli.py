@@ -5,11 +5,11 @@ import typer
 
 from vmsshconfig._config import _load_config
 from vmsshconfig._constants import (
-    SSH_CONFIG_DIR, 
-    SSH_CONFIG_FILE, 
+    SSH_CONFIG_DIR,
+    SSH_CONFIG_FILE,
     SSH_CONFIG_INCLUDE_DIRECTIVE,
     SSH_DIR,
-    GLOBAL_CONFIG_FILE
+    GLOBAL_CONFIG_FILE,
 )
 
 from vmsshconfig._echos import (
@@ -30,7 +30,7 @@ def _create_output(
     template_name: str,
     variables: dict,
     filename: Path = None,
-    directory: Path = SSH_CONFIG_DIR
+    directory: Path = SSH_CONFIG_DIR,
 ) -> None:
     """
     Write new file to disk, within `new_directory`,
@@ -64,9 +64,9 @@ def main(
     ),
 ) -> None:
     """
-    Creates an `~/.ssh/config.d/` directory, checks to see 
+    Creates an `~/.ssh/config.d/` directory, checks to see
     if your ~/.ssh/config file include all files in that directory,
-    and then creates config files for each virtual machine 
+    and then creates config files for each virtual machine
     specified in your `~/.config/vm-ip-ssh-config/settings.json` file.
 
     See https://vm-ip-ssh-config.iancleary.me/ for more information.
@@ -80,10 +80,7 @@ def main(
     # create ~/.ssh/config file or appended to it, as needed
     if not SSH_CONFIG_FILE.is_file():
         # create file with SSH_CONFIG_INCLUDE_DIRECTIVE as sole line
-        _create_output(
-            directory=SSH_DIR,
-            template_name="config.j2"
-        )
+        _create_output(directory=SSH_DIR, template_name="config.j2")
         _create_file_echo(file=SSH_CONFIG_FILE)
     else:
         # check if SSH_CONFIG_INCLUDE_DIRECTIVE is in SSH_CONFIG_FILE
@@ -91,21 +88,21 @@ def main(
         with SSH_CONFIG_FILE.open("r", encoding="utf-8") as ssh_config_file:
             lines = [x for x in ssh_config_file]
             # typer.echo(lines) # debug
-            
+
             for line in lines:
                 if SSH_CONFIG_INCLUDE_DIRECTIVE in line:
                     ssh_config_include_directive_found = True
         # typer.echo(str(ssh_config_include_directive_found)) # debug
-        
+
         # append SSH_CONFIG_INCLUDE_DIRECTIVE to SSH_CONFIG_FILE
         if ssh_config_include_directive_found == False:
-            with SSH_CONFIG_FILE.open("a", encoding="utf-8") as ssh_config_file:            
+            with SSH_CONFIG_FILE.open("a", encoding="utf-8") as ssh_config_file:
                 ssh_config_file.write(SSH_CONFIG_INCLUDE_DIRECTIVE)
             _append_echo(file=SSH_CONFIG_FILE, text=SSH_CONFIG_INCLUDE_DIRECTIVE)
 
     # load and merge config
     config = _load_config(config_file=Path(file))
-  
+
     # accomodate single virtual machine
     if isinstance(config, dict):
         virtual_machine_configs = [config]
@@ -120,10 +117,12 @@ def main(
             template_name="config.d/config.j2",
             variables=virtual_machine_config,
             directory=SSH_CONFIG_DIR,
-            filename=virtual_machine_config["hostname"]
+            filename=virtual_machine_config["hostname"],
         )
 
     # Echo final status to user
     _create_vmsshconfig_echo(
-        hostnames=[SSH_CONFIG_DIR / Path(x["hostname"]) for x in virtual_machine_configs],
+        hostnames=[
+            SSH_CONFIG_DIR / Path(x["hostname"]) for x in virtual_machine_configs
+        ],
     )

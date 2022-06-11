@@ -5,9 +5,7 @@ import typer
 
 
 def _append_echo(file: Path, text: str) -> None:
-    warning_message = (
-        f"{text} appended to {file}."
-    )
+    warning_message = f"{text} appended to {file}."
     styled_warning = typer.style(warning_message, typer.colors.YELLOW, bold=True)
     typer.echo(styled_warning)
 
