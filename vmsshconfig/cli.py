@@ -74,7 +74,7 @@ def main(
     and then creates config files for each virtual machine
     specified in your `~/.config/vm-ip-ssh-config/settings.json` file.
 
-    See https://vm-ip-ssh-config.iancleary.me/ for more information.
+    See https://github.com/iancleary/vm-ssh-config for more information.
     """
 
     # create ~/.ssh/config.d/ directory
