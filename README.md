@@ -114,7 +114,7 @@ The optional command line value takes precendence global settings file being the
 
 ### File
 
-Controls the settings.json to load. 
+Controls the settings.json to load.
 Defaults to `~/.config/vm-ssh-config/settings.json`
 
 Usage:
