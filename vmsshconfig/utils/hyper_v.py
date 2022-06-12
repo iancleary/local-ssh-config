@@ -37,6 +37,7 @@ def get_hyper_v_ip_address(physical_address: str) -> str:
             if physical_address in line:
                 ip_line = line
                 found = True
+                # break # uncomment to find first line that contains physical address
 
         if not found:
             typer.echo(f"{physical_address} not found in \n\n{str(info.stdout)}\n\n")
