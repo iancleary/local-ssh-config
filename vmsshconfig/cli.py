@@ -28,7 +28,7 @@ JINJA_ENVIRONMENT = _create_jinja_environment()
 
 def _create_output(
     template_name: str,
-    variables: dict,
+    variables: dict = {},
     filename: Path = None,
     directory: Path = SSH_CONFIG_DIR,
 ) -> None:
@@ -42,7 +42,7 @@ def _create_output(
     template = JINJA_ENVIRONMENT.get_template(f"{template_name}")
 
     # handle cases of where to get hostname (hyper-v, etc.)
-    if isinstance(variables["hostname"], dict):
+    if "hostname" in variables.keys() and isinstance(variables["hostname"], dict):
         variables["hostname"] = _get_ip_address(source_dict=variables["hostname"])
 
     output = template.render(variables)
@@ -117,7 +117,7 @@ def main(
 
     # loop through virtual machines and create ~/.ssh/config.d/ files
     for virtual_machine_config in virtual_machine_configs:
-        # typer.echo(virtual_machine_config) # debug
+        typer.echo(virtual_machine_config) # debug
         _create_output(
             template_name="config.d/config.j2",
             variables=virtual_machine_config,
