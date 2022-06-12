@@ -30,12 +30,14 @@ def get_hyper_v_ip_address(physical_address: str) -> str:
 
         lines = iter(output.splitlines())
 
+        # Find last line that contains physical address
+        # See https://github.com/iancleary/vm-ssh-config/issues/3 for more details
         found = False
         for line in lines:
             if physical_address in line:
                 ip_line = line
                 found = True
-                break
+                # break # uncomment to find first line that contains physical address
 
         if not found:
             typer.echo(f"{physical_address} not found in \n\n{str(info.stdout)}\n\n")
