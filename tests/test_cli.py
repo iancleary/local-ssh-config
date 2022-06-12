@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import typer
 from typer.testing import CliRunner
 
 from vmsshconfig import __app_name__, __version__, cli
@@ -23,7 +24,8 @@ def test_cli() -> None:
     result = runner.invoke(
         cli.app, ["--file", "tests/settings.json"], input="y\n"
     )  # y to create components directory
-    print(result.stdout)
+    typer.echo(Path.cwd())
+    typer.echo(result.stdout)
     assert result.exit_code == 0
 
     assert str(SSH_CONFIG_DIR / "test.local") in result.stdout
