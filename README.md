@@ -38,7 +38,7 @@ This assumes you have:
 
 ![Hyper-V Manager Networking Tab](docs/assets/hyper-v-manager-networking-tab.png)
 
-> I currently use Ubuntu Servers, if you do to [several `apt` packages installed in the Virtual Machine, so that Hyper-V can report the IP Address](https://stackoverflow.com/a/72534742/13577666)
+> I currently use Ubuntu Servers, if you do too, [please install several `apt` packages in the Virtual Machine (so that Hyper-V can report the IP Address)](https://stackoverflow.com/a/72534742/13577666)
 
 🚨🚨 Hyper-V will not report the ip address until you do the above 🚨🚨
 
