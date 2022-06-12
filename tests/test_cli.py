@@ -22,8 +22,8 @@ def test_version() -> None:
 
 def test_cli() -> None:
     result = runner.invoke(
-        cli.app, ["--file", "tests/settings.json"], input="y\n"
-    )  # y to create components directory
+        cli.app, ["--file", "tests/settings.json"]
+    )
     typer.echo(Path.cwd())
     typer.echo(result.stdout)
     assert result.exit_code == 0
