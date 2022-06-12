@@ -117,7 +117,7 @@ def main(
 
     # loop through virtual machines and create ~/.ssh/config.d/ files
     for virtual_machine_config in virtual_machine_configs:
-        typer.echo(virtual_machine_config) # debug
+        typer.echo(virtual_machine_config)  # debug
         _create_output(
             template_name="config.d/config.j2",
             variables=virtual_machine_config,
