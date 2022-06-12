@@ -140,15 +140,17 @@ Example with single host, as dictionary
 Example with single host, as list:
 
 ```json
-{
-    "host": "ubuntu.local",
-    "hostname": {
-        "source": "hyper-v",
-        "physical_address": "00-15-5d-95-fb-09"
-    },
-    "user": "icleary",
-    "identity_file": "~/.ssh/github_id_rsa_ed25519"
-}
+[
+  {
+      "host": "ubuntu.local",
+      "hostname": {
+          "source": "hyper-v",
+          "physical_address": "00-15-5d-95-fb-09"
+      },
+      "user": "icleary",
+      "identity_file": "~/.ssh/github_id_rsa_ed25519"
+  }
+]
 ```
 
 > A single dictionary is converted to a list of hosts before looping through the files, so either structure is valid (your preference).
