@@ -22,9 +22,9 @@ This leads to ssh configuration, which is by ip address, to be stale every reboo
 This script updates myt ssh config file for me
 
 - get IP address from PowerShell
-- write template config files to the `~/.ssh/config.d/` directory according to your `~/.config/vm-ip-ssh-config/settings.json` file.
+- write template config files to the `~/.ssh/config.d/` directory according to your `~/.config/vm-ssh-config/settings.json` file.
 
-> Plan is to accomodate multipass or VirtualBoxat a later point (hence the lack of Hyper-V in the name). Depends if I start using them more consistently and benefit from dynamically updating my server cattle config.
+> Plan is to accomodate [multipass](https://multipass.run) or VirtualBox at a later point (hence the lack of Hyper-V in the name). Depends if I start using them more consistently and benefit from dynamically updating my server cattle config.
 
 This assumes you have:
 
@@ -181,7 +181,7 @@ Example with multiple hosts:
 
 > I will likely evolve this CLI as I learn more; I'm on my way 😊
 
-- Add [multipass](multipass.run) support for {name}.mshome.net
+- Add [multipass](https://multipass.run) support for {name}.mshome.net
 - Add Virtual Machine Support
 
 **Enjoy quickly updating your ssh configurations 🚀!**
