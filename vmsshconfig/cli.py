@@ -10,6 +10,7 @@ from vmsshconfig._constants import (
     SSH_CONFIG_FILE,
     SSH_CONFIG_INCLUDE_DIRECTIVE,
     SSH_DIR,
+    WINDOWS_MULTIPASS_DEFAULT_ID_RSA,
 )
 from vmsshconfig._echos import (
     _append_echo,
@@ -56,7 +57,7 @@ def _create_output(
             if "identity_file" not in variables.keys():
                 # use default identity file
                 # https://github.com/canonical/multipass/issues/913#issuecomment-697235248 
-                variables['identity_file'] = "C:/Windows/System32/config/systemprofile/AppData/Roaming/multipassd/ssh-keys/id_rsa"
+                variables['identity_file'] = WINDOWS_MULTIPASS_DEFAULT_ID_RSA
 
     output = template.render(variables)
 
