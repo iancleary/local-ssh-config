@@ -43,7 +43,20 @@ def _create_output(
 
     # handle cases of where to get hostname (hyper-v, etc.)
     if "hostname" in variables.keys() and isinstance(variables["hostname"], dict):
+        if "source" in variables["hostname"].keys():
+            if variables["hostname"]["source"] == "multipass":
+                # and platform == windows
+                IS_MULTIPASS = True
+            else:
+                IS_MULTIPASS = False
+
         variables["hostname"] = _get_ip_address(source_dict=variables["hostname"])
+
+        if IS_MULTIPASS:
+            if "identity_file" not in variables.keys():
+                # use default identity file
+                # https://github.com/canonical/multipass/issues/913#issuecomment-697235248 
+                variables['identity_file'] = "C:/Windows/System32/config/systemprofile/AppData/Roaming/multipassd/ssh-keys/id_rsa"
 
     output = template.render(variables)
 
