@@ -56,8 +56,8 @@ def _create_output(
         if IS_MULTIPASS:
             if "identity_file" not in variables.keys():
                 # use default identity file
-                # https://github.com/canonical/multipass/issues/913#issuecomment-697235248 
-                variables['identity_file'] = WINDOWS_MULTIPASS_DEFAULT_ID_RSA
+                # https://github.com/canonical/multipass/issues/913#issuecomment-697235248
+                variables["identity_file"] = WINDOWS_MULTIPASS_DEFAULT_ID_RSA
 
     output = template.render(variables)
 

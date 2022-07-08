@@ -10,7 +10,9 @@ def get_multipass_ip_address(name: str) -> str:
     interface_command = "multipass list"
     info = run(interface_command)
     if info.returncode != 0:
-        typer.echo("Multipass: Powershell (multipass list: An error occured: %s", info.stderr)
+        typer.echo(
+            "Multipass: Powershell (multipass list: An error occured: %s", info.stderr
+        )
     else:
         typer.echo(
             "Multipass-V: Powershell (multipass list): Interface command executed successfully!"
