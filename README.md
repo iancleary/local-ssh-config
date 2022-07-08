@@ -13,7 +13,7 @@ Ian Cleary ([iancleary](https://github.com/iancleary))
 
 ## Problem
 
-Windows doesn't maintain a static IP Address of Hyper-V Virtual Machines across reboots.
+Windows doesn't maintain a static IP Address of Hyper-V Virtual Machines across reboots.  When using [multipass](https://multipass.run) with a Hyper-V backend, this applies as well for multipass.
 
 This leads to ssh configuration, which is by ip address, to be stale every reboot.
 
@@ -21,10 +21,8 @@ This leads to ssh configuration, which is by ip address, to be stale every reboo
 
 This script updates myt ssh config file for me
 
-- get IP address from PowerShell
+- get IP address from PowerShell for hyper-v by name according to source ('hyper-v' directly, or 'multipass list')
 - write template config files to the `~/.ssh/config.d/` directory according to your `~/.config/vm-ssh-config/settings.json` file.
-
-> Plan is to accomodate [multipass](https://multipass.run) or VirtualBox at a later point (hence the lack of Hyper-V in the name). Depends if I start using them more consistently and benefit from dynamically updating my server cattle config.
 
 This assumes you have:
 
@@ -85,12 +83,18 @@ The first and only argument is the name of the component to create.
 
 ```bash
 $ vm-ssh-config
+{'host': 'test.local', 'hostname': '0.0.0.0', 'user': 'test', 'identity_file': '~/.ssh/example_id_ed25519'}
+{'host': 'ubuntu.local', 'hostname': {'source': 'hyper-v', 'physical_address': '00-15-5d-95-fb-09'}, 'user': 'icleary', 'identity_file': '~/.ssh/github_id_rsa_ed25519'}
 Hyper-V: Powershell (arp -a): Interface command executed successfully!
+-------------------------
+{'host': 'dev1.multipass.local', 'hostname': {'source': 'multipass', 'name': 'dev1'}, 'user': 'ubuntu'}
+Multipass-V: Powershell (multipass list): Interface command executed successfully!
 -------------------------
 
 ✨ Creating ~/.ssh/config.d/ files
 ✅ C:\Users\icleary\.ssh\config.d\test.local
 ✅ C:\Users\icleary\.ssh\config.d\ubuntu.local
+✅ C:\Users\icleary\.ssh\config.d\dev1.multipass.local
 SSH config updated! 🚀 ✨!
 
 Thank you for using vm-ssh-config.
@@ -100,6 +104,7 @@ The path printed is the absolute path to the updated config files.
 
 > This uses a directory `~/.ssh/config.d/` to allow for a single file per Host, to allow cleaner version tracking within a dotfile manager.
 > See [`Include config.d/*` in your `~/.ssh/config`](https://superuser.com/questions/247564/is-there-a-way-for-one-ssh-config-file-to-include-another-one) for the include syntax
+> [WINDOWS_MULTIPASS_DEFAULT_ID_RSA](https://github.com/canonical/multipass/issues/913#issuecomment-697235248) = "C:/Windows/System32/config/systemprofile/AppData/Roaming/multipassd/ssh-keys/id_rsa"
 
 ## Configuration
 
@@ -173,6 +178,14 @@ Example with multiple hosts:
         },
         "user": "icleary",
         "identity_file": "~/.ssh/github_id_rsa_ed25519"
+    },
+    {
+        "host": "dev1.multipass.local",
+        "hostname": {
+            "source": "multipass",
+            "name": "dev1"
+        },
+        "user": "ubuntu"
     }
 ]
 ```
@@ -180,9 +193,6 @@ Example with multiple hosts:
 ## Further information
 
 > I will likely evolve this CLI as I learn more; I'm on my way 😊
-
-- Add [multipass](https://multipass.run) support for {name}.mshome.net
-- Add Virtual Machine Support
 
 **Enjoy quickly updating your ssh configurations 🚀!**
 

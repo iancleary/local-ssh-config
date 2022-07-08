@@ -2,18 +2,20 @@ from pathlib import Path
 
 import typer
 
-from vmsshconfig.utils.powershell import run
+from .powershell import run
 
 
-def get_hyper_v_ip_address(physical_address: str) -> str:
+def get_multipass_ip_address(name: str) -> str:
     # PowerShell command to run
-    interface_command = "arp -a"
+    interface_command = "multipass list"
     info = run(interface_command)
     if info.returncode != 0:
-        typer.echo("Hyper-V: Powershell (arp -a): An error occured: %s", info.stderr)
+        typer.echo(
+            "Multipass: Powershell (multipass list: An error occured: %s", info.stderr
+        )
     else:
         typer.echo(
-            "Hyper-V: Powershell (arp -a): Interface command executed successfully!"
+            "Multipass-V: Powershell (multipass list): Interface command executed successfully!"
         )
 
         print("-------------------------")
@@ -30,15 +32,15 @@ def get_hyper_v_ip_address(physical_address: str) -> str:
         # See https://github.com/iancleary/vm-ssh-config/issues/3 for more details
         found = False
         for line in lines:
-            if physical_address in line:
+            if name in line:
                 ip_line = line
                 found = True
                 # break # uncomment to find first line that contains physical address
 
         if not found:
-            typer.echo(f"{physical_address} not found in \n\n{str(info.stdout)}\n\n")
+            typer.echo(f"{name} not found in \n\n{str(info.stdout)}\n\n")
 
         ip_line_cleaned = [x for x in ip_line.split(" ") if x != ""]
-        ip_address = ip_line_cleaned[0]
+        ip_address = ip_line_cleaned[2]
 
         return ip_address

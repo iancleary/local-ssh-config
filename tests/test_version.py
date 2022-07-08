@@ -1,6 +1,6 @@
 from vmsshconfig import __version__, package_version
 
-current_version = "0.1.2"
+current_version = "0.2.0"
 
 
 def test_package_version() -> None:
