@@ -22,7 +22,7 @@ def _create_dir_echo(directory: Path) -> None:
     typer.echo(styled_message)
 
 
-def _create_vmsshconfig_echo(
+def _create_local_ssh_config_echo(
     hostnames: List[str],
 ) -> None:
     """
@@ -40,7 +40,7 @@ def _create_vmsshconfig_echo(
     typer.echo(message_end)
     typer.echo("")
 
-    message = "Thank you for using vm-ssh-config."
+    message = "Thank you for using local-ssh-config."
 
     thank_you_message = typer.style(message, typer.colors.BRIGHT_BLACK)
     typer.echo(thank_you_message)

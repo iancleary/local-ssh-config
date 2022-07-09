@@ -1,4 +1,4 @@
-from vmsshconfig import __version__, package_version
+from local_ssh_config import __version__, package_version
 
 current_version = "0.2.0"
 

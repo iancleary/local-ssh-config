@@ -1,6 +1,6 @@
 import typer
 
-from vmsshconfig import __app_name__, __version__
+from local_ssh_config import __app_name__, __version__
 
 
 def _version_callback(value: bool) -> None:

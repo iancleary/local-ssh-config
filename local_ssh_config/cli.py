@@ -3,8 +3,8 @@ from typing import Optional
 
 import typer
 
-from vmsshconfig._config import _load_config
-from vmsshconfig._constants import (
+from local_ssh_config._config import _load_config
+from local_ssh_config._constants import (
     GLOBAL_CONFIG_FILE,
     SSH_CONFIG_DIR,
     SSH_CONFIG_FILE,
@@ -12,15 +12,15 @@ from vmsshconfig._constants import (
     SSH_DIR,
     WINDOWS_MULTIPASS_DEFAULT_ID_RSA,
 )
-from vmsshconfig._echos import (
+from local_ssh_config._echos import (
     _append_echo,
     _create_dir_echo,
     _create_file_echo,
-    _create_vmsshconfig_echo,
+    _create_local_ssh_config_echo,
 )
-from vmsshconfig._jinja import _create_jinja_environment
-from vmsshconfig._version import _version_callback
-from vmsshconfig.utils import _get_ip_address
+from local_ssh_config._jinja import _create_jinja_environment
+from local_ssh_config._version import _version_callback
+from local_ssh_config.utils import _get_ip_address
 
 app = typer.Typer()
 
@@ -88,7 +88,7 @@ def main(
     and then creates config files for each virtual machine
     specified in your `~/.config/vm-ip-ssh-config/settings.json` file.
 
-    See https://github.com/iancleary/vm-ssh-config for more information.
+    See https://github.com/iancleary/local-ssh-config for more information.
     """
 
     # create ~/.ssh/config.d/ directory
@@ -140,6 +140,6 @@ def main(
         )
 
     # Echo final status to user
-    _create_vmsshconfig_echo(
+    _create_local_ssh_config_echo(
         hostnames=[SSH_CONFIG_DIR / Path(x["host"]) for x in virtual_machine_configs],
     )

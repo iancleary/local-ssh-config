@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from vmsshconfig._constants import GLOBAL_CONFIG_FILE
+from local_ssh_config._constants import GLOBAL_CONFIG_FILE
 
 
 def _load_config(config_file: Path = GLOBAL_CONFIG_FILE) -> dict:

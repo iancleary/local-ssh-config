@@ -5,9 +5,9 @@ repos:
     rev: 22.3.0
     hooks:
       - id: black
-        args: [vmsshconfig, tests]
+        args: [local_ssh_config, tests]
   - repo: https://github.com/pycqa/isort
     rev: 5.10.1
     hooks:
       - id: isort
-        args: [--filter-files, vmsshconfig, tests]
+        args: [--filter-files, local_ssh_config, tests]
