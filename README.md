@@ -1,9 +1,9 @@
-# vm-ssh-config
+# local-ssh-config
 
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://black.readthedocs.io/en/stable/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![ci](https://github.com/iancleary/vm-ssh-config/workflows/ci/badge.svg)](https://github.com/iancleary/vm-ssh-config/actions/workflows/ci.yml)
+[![ci](https://github.com/iancleary/local-ssh-config/workflows/ci/badge.svg)](https://github.com/iancleary/local-ssh-config/actions/workflows/ci.yml)
 
 Ian Cleary ([iancleary](https://github.com/iancleary))
 
@@ -22,7 +22,7 @@ This leads to ssh configuration, which is by ip address, to be stale every reboo
 This script updates myt ssh config file for me
 
 - get IP address from PowerShell for hyper-v by name according to source ('hyper-v' directly, or 'multipass list')
-- write template config files to the `~/.ssh/config.d/` directory according to your `~/.config/vm-ssh-config/settings.json` file.
+- write template config files to the `~/.ssh/config.d/` directory according to your `~/.config/local-ssh-config/settings.json` file.
 
 This assumes you have:
 
@@ -47,21 +47,21 @@ As this tool only currently supports Hyper-V, please consider this a warning of 
 ## Quickstart
 
 ```sh
-❯ pipx install vm-ssh-config
-❯ vm-ssh-config --help
+❯ pipx install local-ssh-config
+❯ local-ssh-config --help
 ```
 
 That will output the following:
 
 ```bash
-Usage: vmsshconfig [OPTIONS]
+Usage: local_ssh_config [OPTIONS]
 
   Creates an `~/.ssh/config.d/` directory, 
   checks to see if you include all files in that directory,
   and then creates config files for each virtual machine specified
   in your `~/.config/vm-ip-ssh-config/settings.json` file.
 
-  See https://github.com/iancleary/vm-ssh-config/ for more information.
+  See https://github.com/iancleary/local-ssh-config/ for more information.
 
 Arguments:
   None
@@ -82,7 +82,7 @@ Options:
 The first and only argument is the name of the component to create.
 
 ```bash
-$ vm-ssh-config
+$ local-ssh-config
 {'host': 'test.local', 'hostname': '0.0.0.0', 'user': 'test', 'identity_file': '~/.ssh/example_id_ed25519'}
 {'host': 'ubuntu.local', 'hostname': {'source': 'hyper-v', 'physical_address': '00-15-5d-95-fb-09'}, 'user': 'icleary', 'identity_file': '~/.ssh/github_id_rsa_ed25519'}
 Hyper-V: Powershell (arp -a): Interface command executed successfully!
@@ -97,7 +97,7 @@ Multipass-V: Powershell (multipass list): Interface command executed successfull
 ✅ C:\Users\icleary\.ssh\config.d\dev1.multipass.local
 SSH config updated! 🚀 ✨!
 
-Thank you for using vm-ssh-config.
+Thank you for using local-ssh-config.
 ```
 
 The path printed is the absolute path to the updated config files.
@@ -110,8 +110,8 @@ The path printed is the absolute path to the updated config files.
 
 Configuration can be done through 2 different ways:
 
-- Creating a global `settings.json` in your home directory (`~/.config/vm-ssh-config/settings.json`).
-- Creating a local `.vm-ssh-config-config.json` in your project's root directory and including the path to that file with the `--f` or `-f` optionanl command-line argument.
+- Creating a global `settings.json` in your home directory (`~/.config/local-ssh-config/settings.json`).
+- Creating a local `.local-ssh-config-config.json` in your project's root directory and including the path to that file with the `--f` or `-f` optionanl command-line argument.
 
 The optional command line value takes precendence global settings file being the default.
 
@@ -120,7 +120,7 @@ The optional command line value takes precendence global settings file being the
 ### File
 
 Controls the settings.json to load.
-Defaults to `~/.config/vm-ssh-config/settings.json`
+Defaults to `~/.config/local-ssh-config/settings.json`
 
 Usage:
 

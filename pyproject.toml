@@ -1,6 +1,6 @@
 [tool.isort]
 profile = "black"
-src_paths = ["vmsshconfig", "tests"]
+src_paths = ["local_ssh_config", "tests"]
 
 [tool.mypy]
 disallow_incomplete_defs = true
@@ -11,17 +11,19 @@ namespace_packages = true
 show_error_codes = true
 
 [tool.poetry]
-name = "vmsshconfig"
-version = "0.2.0"
+name = "local_ssh_config"
+version = "0.3.0"
 description = "Quickly update ssh config files for your local virtual machines"
 authors = ["Ian Cleary <contact@iancleary.me>"]
 license = "MIT"
-homepage = "https://github.com/iancleary/vm-ssh-config"
+homepage = "https://github.com/iancleary/local-ssh-config"
 readme = "README.md"
-include = ["vmsshconfig/py.typed", "templates/"]
+include = ["local_ssh_config/py.typed", "templates/"]
 
 [tool.poetry.scripts]
-vm-ssh-config = "vmsshconfig.__main__:main"
+local-ssh-config = "local_ssh_config.__main__:main"
+local_ssh_config = "local_ssh_config.__main__:main"
+lsc = "local_ssh_config.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"

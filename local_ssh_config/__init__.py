@@ -1,10 +1,10 @@
 """
-vmsshconfig
+local_ssh_config
 ---
 """
 from importlib.metadata import version
 
-__app_name__ = "vmsshconfig"
+__app_name__ = "local_ssh_config"
 
 
 def package_version(package: str = __package__) -> str:

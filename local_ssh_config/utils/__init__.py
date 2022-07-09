@@ -1,5 +1,5 @@
-from vmsshconfig.utils.hyper_v import get_hyper_v_ip_address
-from vmsshconfig.utils.multipass import get_multipass_ip_address
+from local_ssh_config.utils.hyper_v import get_hyper_v_ip_address
+from local_ssh_config.utils.multipass import get_multipass_ip_address
 
 VALID_SOURCES = {"hyper-v"}
 

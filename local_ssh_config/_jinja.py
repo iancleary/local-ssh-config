@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 
-from vmsshconfig._constants import TEMPLATES_PATH
+from local_ssh_config._constants import TEMPLATES_PATH
 
 
 def _create_jinja_environment() -> Environment:

@@ -1,4 +1,4 @@
-from vmsshconfig import __app_name__, cli
+from local_ssh_config import __app_name__, cli
 
 
 def main() -> None:
