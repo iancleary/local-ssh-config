@@ -12,7 +12,7 @@ show_error_codes = true
 
 [tool.poetry]
 name = "local_ssh_config"
-version = "0.2.0"
+version = "0.3.0"
 description = "Quickly update ssh config files for your local virtual machines"
 authors = ["Ian Cleary <contact@iancleary.me>"]
 license = "MIT"
