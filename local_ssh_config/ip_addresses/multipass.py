@@ -2,13 +2,13 @@ from pathlib import Path
 
 import typer
 
-from .powershell import run
+import local_ssh_config.ip_addresses._powershell as ps
 
 
 def get_multipass_ip_address(name: str) -> str:
     # PowerShell command to run
     interface_command = "multipass list"
-    info = run(interface_command)
+    info = ps.run(interface_command)
     if info.returncode != 0:
         typer.echo(
             "Multipass: Powershell (multipass list: An error occured: %s", info.stderr
