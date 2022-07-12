@@ -15,6 +15,7 @@ def _prompt_to_update_hosts_file(virtual_machine_configs) -> None:
 
     thank_you_message = typer.style(message, typer.colors.BRIGHT_BLACK)
     typer.echo(thank_you_message)
+    typer.echo(WINDOWS_HOST_FILE)
     typer.echo("")
 
     lines_to_add = []
@@ -36,5 +37,5 @@ def _prompt_to_update_hosts_file(virtual_machine_configs) -> None:
     # f.writelines(lines_to_add)
     # f.close()
 
-    typer.echo(WINDOWS_HOST_FILE)
-    typer.echo("")
+    
+    # typer.echo("")
