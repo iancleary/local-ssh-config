@@ -2,13 +2,13 @@ from pathlib import Path
 
 import typer
 
-from local_ssh_config.utils.powershell import run
+import local_ssh_config.utils.ip_addresses._powershell as ps
 
 
 def get_hyper_v_ip_address(physical_address: str) -> str:
     # PowerShell command to run
     interface_command = "arp -a"
-    info = run(interface_command)
+    info = ps.run(interface_command)
     if info.returncode != 0:
         typer.echo("Hyper-V: Powershell (arp -a): An error occured: %s", info.stderr)
     else:

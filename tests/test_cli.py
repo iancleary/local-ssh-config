@@ -4,7 +4,7 @@ import typer
 from typer.testing import CliRunner
 
 from local_ssh_config import __app_name__, __version__, cli
-from local_ssh_config._constants import SSH_CONFIG_DIR  # GLOBAL_CONFIG_FILE,
+from local_ssh_config.ssh._constants import SSH_CONFIG_DIR  # GLOBAL_CONFIG_FILE,
 
 # if GLOBAL_CONFIG_FILE.exists():
 #     os.remove(GLOBAL_CONFIG_FILE)
