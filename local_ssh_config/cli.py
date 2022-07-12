@@ -7,11 +7,10 @@ from local_ssh_config._config import _load_config
 from local_ssh_config._constants import GLOBAL_CONFIG_FILE
 from local_ssh_config._echos import _create_local_ssh_config_echo, _welcome_echo
 from local_ssh_config._version import _version_callback
-from local_ssh_config.ssh._constants import (
-    SSH_CONFIG_DIR,
-)
-from local_ssh_config.ssh.structure import create_ssh_config_dir_if_needed
+from local_ssh_config.hosts._update import _update_hosts_file
+from local_ssh_config.ssh._constants import SSH_CONFIG_DIR
 from local_ssh_config.ssh._update import _update_ssh_file
+from local_ssh_config.ssh.structure import create_ssh_config_dir_if_needed
 
 app = typer.Typer()
 
@@ -60,10 +59,15 @@ def main(
     # typer.echo(str(virtual_machine_configs)) # debug
 
     # loop through virtual machines and create ~/.ssh/config.d/ files
+    updated_virtual_machine_configs = []
     for virtual_machine_config in virtual_machine_configs:
         typer.echo(f"Config: {virtual_machine_config}")  # debug
 
-        _update_ssh_file(config=virtual_machine_config)
+        virtual_machine_config = _update_ssh_file(config=virtual_machine_config)
+
+        updated_virtual_machine_configs.append(virtual_machine_config)
+
+    _update_hosts_file(virtual_machine_configs=updated_virtual_machine_configs)
 
     # Echo final status to user
     _create_local_ssh_config_echo(

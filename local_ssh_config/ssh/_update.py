@@ -37,3 +37,5 @@ def _update_ssh_file(virtual_machine_config: dict) -> None:
             directory=SSH_CONFIG_DIR,
             filename=virtual_machine_config["host"],
         )
+
+        return virtual_machine_config
