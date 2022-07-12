@@ -1,10 +1,10 @@
-from local_ssh_config._constants import (
+from local_ssh_config._echos import _append_echo, _create_dir_echo, _create_file_echo
+from local_ssh_config.ssh._constants import (
     SSH_CONFIG_DIR,
     SSH_CONFIG_FILE,
     SSH_CONFIG_INCLUDE_DIRECTIVE,
     SSH_DIR,
 )
-from local_ssh_config._echos import _append_echo, _create_dir_echo, _create_file_echo
 from local_ssh_config.utils.jinja._helpers import _create_file_from_template
 
 

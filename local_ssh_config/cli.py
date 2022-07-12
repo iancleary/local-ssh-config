@@ -4,16 +4,14 @@ from typing import Optional
 import typer
 
 from local_ssh_config._config import _load_config
-from local_ssh_config._constants import (
-    GLOBAL_CONFIG_FILE,
-    SSH_CONFIG_DIR,
-    WINDOWS_MULTIPASS_DEFAULT_ID_RSA,
-)
+from local_ssh_config._constants import GLOBAL_CONFIG_FILE
 from local_ssh_config._echos import _create_local_ssh_config_echo, _welcome_echo
 from local_ssh_config._version import _version_callback
-from local_ssh_config.ip_addresses import _get_ip_address
+from local_ssh_config.ssh._constants import (
+    SSH_CONFIG_DIR,
+)
 from local_ssh_config.ssh.structure import create_ssh_config_dir_if_needed
-from local_ssh_config.utils.jinja._helpers import _create_file_from_template
+from local_ssh_config.ssh._update import _update_ssh_file
 
 app = typer.Typer()
 
@@ -65,35 +63,7 @@ def main(
     for virtual_machine_config in virtual_machine_configs:
         typer.echo(f"Config: {virtual_machine_config}")  # debug
 
-        # handle cases of where to get hostname (hyper-v, etc.)
-        if "hostname" in virtual_machine_config.keys() and isinstance(
-            virtual_machine_config["hostname"], dict
-        ):
-            if "source" in virtual_machine_config["hostname"].keys():
-                if virtual_machine_config["hostname"]["source"] == "multipass":
-                    # and platform == windows
-                    IS_MULTIPASS = True
-                else:
-                    IS_MULTIPASS = False
-
-            virtual_machine_config["hostname"] = _get_ip_address(
-                source_dict=virtual_machine_config["hostname"]
-            )
-
-            if IS_MULTIPASS:
-                if "identity_file" not in virtual_machine_config.keys():
-                    # use default identity file
-                    # https://github.com/canonical/multipass/issues/913#issuecomment-697235248
-                    virtual_machine_config[
-                        "identity_file"
-                    ] = WINDOWS_MULTIPASS_DEFAULT_ID_RSA
-
-            _create_file_from_template(
-                template_name="config.d/config.j2",
-                variables=virtual_machine_config,
-                directory=SSH_CONFIG_DIR,
-                filename=virtual_machine_config["host"],
-            )
+        _update_ssh_file(config=virtual_machine_config)
 
     # Echo final status to user
     _create_local_ssh_config_echo(
