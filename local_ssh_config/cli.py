@@ -33,11 +33,11 @@ def main(
         is_eager=True,
     ),
 ) -> None:
-    """
+    f"""
     Creates an `~/.ssh/config.d/` directory, checks to see
     if your ~/.ssh/config file include all files in that directory,
     and then creates config files for each virtual machine
-    specified in your `~/.config/vm-ip-ssh-config/settings.json` file.
+    specified in your `~/.config/{GLOBAL_CONFIG_FILE}` file.
 
     See https://github.com/iancleary/local-ssh-config for more information.
     """
