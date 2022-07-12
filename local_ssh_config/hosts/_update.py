@@ -38,4 +38,3 @@ def _prompt_to_update_hosts_file(virtual_machine_configs) -> None:
 
     typer.echo(WINDOWS_HOST_FILE)
     typer.echo("")
-

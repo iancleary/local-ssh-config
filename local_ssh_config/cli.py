@@ -69,7 +69,9 @@ def main(
 
         updated_virtual_machine_configs.append(virtual_machine_config)
 
-    _prompt_to_update_hosts_file(virtual_machine_configs=updated_virtual_machine_configs)
+    _prompt_to_update_hosts_file(
+        virtual_machine_configs=updated_virtual_machine_configs
+    )
 
     # Echo final status to user
     _create_local_ssh_config_echo(
