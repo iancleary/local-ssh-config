@@ -2,7 +2,7 @@ from pathlib import Path
 
 import typer
 
-import local_ssh_config.ip_addresses._powershell as ps
+import local_ssh_config.utils.ip_addresses._powershell as ps
 
 
 def get_hyper_v_ip_address(physical_address: str) -> str:

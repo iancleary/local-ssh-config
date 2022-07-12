@@ -1,10 +1,21 @@
+import shutil
+from pathlib import Path
 from typing import List
 
-from local_ssh_config.hosts._constants import WINDOWS_HOST_FILE
+import typer
+
+from local_ssh_config.hosts._constants import WINDOWS_HOST_FILE, WINDOWS_HOST_FOLDER
 
 
-def _update_host_file(virtual_machine_configs: List(dict)) -> None:
+def _prompt_to_update_hosts_file(virtual_machine_configs) -> None:
     # extract IP address and hostname from each o
+
+    typer.echo("")
+    message = "✨ If you'd like to update your hosts file ✨"
+
+    thank_you_message = typer.style(message, typer.colors.BRIGHT_BLACK)
+    typer.echo(thank_you_message)
+    typer.echo("")
 
     lines_to_add = []
     for config in virtual_machine_configs:
@@ -12,13 +23,19 @@ def _update_host_file(virtual_machine_configs: List(dict)) -> None:
         host = config["host"]
 
         # add line
-        lines_to_add.append(f"{ip_address} {host}\n")
+        new_line = f"{ip_address} {host}"
+        lines_to_add.append(f"{new_line}\n")
+        typer.echo(new_line)
 
-    new_content = ""
-    for line in lines_to_add:
-        new_content = new_content + line
+    # typer.echo(lines_to_add)
+    # shutil.copy(
+    #     WINDOWS_HOST_FILE, Path(WINDOWS_HOST_FOLDER) / "hosts.local_ssh_config.backup"
+    # )
 
-    with open(WINDOWS_HOST_FILE, "w+") as f:
-        f.write(new_content)
+    # f = open(WINDOWS_HOST_FILE, "w")
+    # f.writelines(lines_to_add)
+    # f.close()
 
-    pass
+    typer.echo(WINDOWS_HOST_FILE)
+    typer.echo("")
+
