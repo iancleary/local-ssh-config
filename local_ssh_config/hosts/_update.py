@@ -37,5 +37,4 @@ def _prompt_to_update_hosts_file(virtual_machine_configs) -> None:
     # f.writelines(lines_to_add)
     # f.close()
 
-    
     # typer.echo("")
