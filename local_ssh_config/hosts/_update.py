@@ -9,7 +9,7 @@ from local_ssh_config.hosts._constants import WINDOWS_HOST_FILE, WINDOWS_HOST_FO
 
 def _prompt_to_update_hosts_file(virtual_machine_configs) -> None:
     # extract IP address and hostname from each o
-
+    
     typer.echo("")
     message = "✨ If you'd like to update your hosts file ✨"
 
@@ -20,13 +20,15 @@ def _prompt_to_update_hosts_file(virtual_machine_configs) -> None:
 
     lines_to_add = []
     for config in virtual_machine_configs:
-        ip_address = config["hostname"]
-        host = config["host"]
 
-        # add line
-        new_line = f"{ip_address} {host}"
-        lines_to_add.append(f"{new_line}\n")
-        typer.echo(new_line)
+        if config != {}:
+            ip_address = config["hostname"]
+            host = config["host"]
+
+            # add line
+            new_line = f"{ip_address} {host}"
+            lines_to_add.append(f"{new_line}\n")
+            typer.echo(new_line)
 
     # typer.echo(lines_to_add)
     # shutil.copy(

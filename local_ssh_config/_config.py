@@ -18,7 +18,7 @@ def _load_config(config_file: Path = GLOBAL_CONFIG_FILE) -> dict:
         f.close()
     else:
         NEW_CONFIG_FILE_CREATED = True
-        with open(config_file, "w") as f:
+        with open(config_file, "w", encoding='utf-8') as f:
             initial_config = {}
             json.dump(initial_config, f)
             f.close()
