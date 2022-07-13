@@ -1,6 +1,6 @@
 from local_ssh_config import __version__, package_version
 
-current_version = "0.4.0"
+current_version = "0.4.1"
 
 
 def test_package_version() -> None:
