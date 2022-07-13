@@ -19,7 +19,7 @@ This leads to ssh configuration, which is by ip address, to be stale every reboo
 
 ## Solution
 
-This script updates myt ssh config file for me
+This script updates my ssh config file for me
 
 - get IP address from PowerShell for hyper-v by name according to source ('hyper-v' directly, or 'multipass list')
 - write template config files to the `~/.ssh/config.d/` directory according to your `~/.config/local-ssh-config/settings.json` file.
