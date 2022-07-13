@@ -9,7 +9,7 @@ from local_ssh_config.hosts._constants import WINDOWS_HOST_FILE, WINDOWS_HOST_FO
 
 def _prompt_to_update_hosts_file(virtual_machine_configs) -> None:
     # extract IP address and hostname from each o
-    
+
     typer.echo("")
     message = "✨ If you'd like to update your hosts file ✨"
 
