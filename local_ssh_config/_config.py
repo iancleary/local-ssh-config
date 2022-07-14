@@ -10,6 +10,10 @@ def _load_config(config_file: Path = GLOBAL_CONFIG_FILE) -> dict:
     """
     file_config = {}
 
+    p = Path(config_file)
+    folder = p.parent
+    folder.mkdir(parents=True, exist_ok=True)
+
     NEW_CONFIG_FILE_CREATED = False
 
     if config_file.exists():
@@ -18,6 +22,7 @@ def _load_config(config_file: Path = GLOBAL_CONFIG_FILE) -> dict:
         f.close()
     else:
         NEW_CONFIG_FILE_CREATED = True
+
         with open(config_file, "w", encoding="utf-8") as f:
             initial_config = {}
             json.dump(initial_config, f)
