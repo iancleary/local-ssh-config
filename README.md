@@ -47,7 +47,7 @@ As this tool only currently supports Hyper-V, please consider this a warning of 
 ## Quickstart
 
 ```sh
-❯ pipx install local-ssh-config
+❯ pipx install local-ssh-config --user
 ❯ local-ssh-config --help
 ```
 
