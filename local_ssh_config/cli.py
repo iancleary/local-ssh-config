@@ -10,7 +10,10 @@ from local_ssh_config._version import _version_callback
 from local_ssh_config.hosts._update import _prompt_to_update_hosts_file
 from local_ssh_config.ssh._constants import SSH_CONFIG_DIR
 from local_ssh_config.ssh._update import _update_ssh_file
-from local_ssh_config.ssh.structure import create_ssh_config_dir_if_needed
+from local_ssh_config.ssh.structure import (
+    create_ssh_config_dir_if_needed,
+    ensure_ssh_config_file_has_include_directive,
+)
 
 app = typer.Typer()
 
@@ -44,6 +47,8 @@ def main(
     _welcome_echo()
 
     create_ssh_config_dir_if_needed()
+
+    ensure_ssh_config_file_has_include_directive()
 
     # load config
     (NEW_CONFIG_FILE_CREATED, config) = _load_config(config_file=Path(file))
