@@ -1,5 +1,5 @@
 import os
-from pathlib import Path, PureWindowsPath
+from pathlib import Path
 
 SSH_DIR = Path.home() / ".ssh/"
 SSH_CONFIG_DIR = Path.home() / ".ssh/config.d/"
