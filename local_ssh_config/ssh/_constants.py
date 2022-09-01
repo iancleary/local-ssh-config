@@ -7,7 +7,7 @@ SSH_CONFIG_FILE = Path.home() / ".ssh/config"
 
 SSH_CONFIG_INCLUDE_DIRECTIVE = "Include config.d/*"
 
-_PROGRAM_DATA = Path(os.environ["PROGRAMDATA"])
+_PROGRAM_DATA = Path(os.getenv("PROGRAMDATA", "C:\\ProgramData"))
 
 WINDOWS_MULTIPASS_DEFAULT_ID_RSA = Path(
     _PROGRAM_DATA / Path("Multipass/data/ssh-keys/id_rsa")
