@@ -104,7 +104,7 @@ The path printed is the absolute path to the updated config files.
 
 > This uses a directory `~/.ssh/config.d/` to allow for a single file per Host, to allow cleaner version tracking within a dotfile manager.
 > See [`Include config.d/*` in your `~/.ssh/config`](https://superuser.com/questions/247564/is-there-a-way-for-one-ssh-config-file-to-include-another-one) for the include syntax
-> [WINDOWS_MULTIPASS_DEFAULT_ID_RSA](https://github.com/canonical/multipass/issues/913#issuecomment-697235248) = "C:/Windows/System32/config/systemprofile/AppData/Roaming/multipassd/ssh-keys/id_rsa"
+> [WINDOWS_MULTIPASS_DEFAULT_ID_RSA](https://github.com/canonical/multipass/issues/913#issuecomment-697235248) = "%PROGRAMDATA%/Multipass/data/ssh-keys/id_rsa"
 
 ## Configuration
 
