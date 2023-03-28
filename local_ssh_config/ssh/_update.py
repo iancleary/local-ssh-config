@@ -7,7 +7,6 @@ from local_ssh_config.utils.jinja._helpers import _create_file_from_template
 
 
 def _update_ssh_file(virtual_machine_config: dict) -> None:
-
     # handle cases of where to get hostname (hyper-v, etc.)
     if "hostname" in virtual_machine_config.keys() and isinstance(
         virtual_machine_config["hostname"], dict
