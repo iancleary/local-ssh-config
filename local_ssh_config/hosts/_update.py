@@ -20,7 +20,6 @@ def _prompt_to_update_hosts_file(virtual_machine_configs) -> None:
 
     lines_to_add = []
     for config in virtual_machine_configs:
-
         if config != {}:
             ip_address = config["hostname"]
             host = config["host"]

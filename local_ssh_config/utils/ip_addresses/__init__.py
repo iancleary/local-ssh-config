@@ -5,7 +5,6 @@ VALID_SOURCES = {"hyper-v"}
 
 
 def _get_ip_address(source_dict: dict[str]) -> str:
-
     if source_dict["source"] == "hyper-v":
         return get_hyper_v_ip_address(physical_address=source_dict["physical_address"])
     elif source_dict["source"] == "multipass":
